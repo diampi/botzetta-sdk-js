@@ -1,0 +1,20 @@
+name: Dúvida sobre o SDK
+description: Como usar algum recurso do SDK
+labels: [question]
+body:
+  - type: dropdown
+    id: pacote
+    attributes:
+      label: Pacote
+      options:
+        - "@botzetta/sdk"
+        - "@botzetta/sdk-frame"
+    validations:
+      required: true
+  - type: textarea
+    id: duvida
+    attributes:
+      label: Sua dúvida
+      description: O que você está tentando fazer e o que já tentou. Nunca cole tokens, chaves privadas ou dados de clientes.
+    validations:
+      required: true

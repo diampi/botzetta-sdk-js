@@ -1,0 +1,175 @@
+/* @botzetta/sdk-frame/tema.css
+   Variáveis de tema do Botzetta para a página do parceiro dentro do iframe (outro documento: não herda
+   as variáveis do host). Cópia exata dos blocos :root e .dark do tema da interface do Botzetta, atualizada
+   junto com ela (o teste tests/tema.test.ts confere que claro e escuro têm as mesmas variáveis).
+   O sdk-frame põe/tira a classe .dark no <html> conforme o tema do host (contexto e evento "tema").
+   Com Tailwind v4, mapeie os tokens num bloco @theme inline (ex.: --color-primary: var(--primary)). */
+
+:root {
+  --background: oklab(97.743% -0.0023 -0.00359);
+  --foreground: oklch(0.2621 0.0095 248.1897);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.2621 0.0095 248.1897);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.2739 0.0055 286.0326);
+  --primary: oklch(0.5782 0.2282 260.0251);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.5575 0.0165 244.8933);
+  --secondary-foreground: oklch(1.0000 0 0);
+  --muted: oklch(0.9816 0.0017 247.8390);
+  --muted-foreground: oklch(0.5575 0.0165 244.8933);
+  --accent: oklch(0.9816 0.0017 247.8390);
+  --accent-foreground: oklch(0.2621 0.0095 248.1897);
+  --destructive: oklch(0.5915 0.2020 21.2388);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.9000 0.0095 247.8790);
+  
+  /* --input: oklch(94.166% 0.00528 248.345); */
+  --input: #c5c8cd;
+
+  --ring: oklch(0.5782 0.2282 260.0251);
+  --success: oklch(0.62 0.17 150);
+  --success-foreground: oklch(1.0000 0 0);
+  --warning: oklch(0.72 0.15 75);
+  --warning-foreground: oklch(0.2 0.05 75);
+  --chart-1: oklch(0.5782 0.2282 260.0251);
+  --chart-2: oklch(0.5575 0.0165 244.8933);
+  --chart-3: oklch(0.5520 0.1234 157.0121);
+  --chart-4: oklch(0.8442 0.1722 84.9338);
+  --chart-5: oklch(0.5915 0.2020 21.2388);
+  --sidebar: oklch(0.2103 0.0059 285.8852);
+  --sidebar-foreground: oklch(0.9816 0.0017 247.8390);
+  --sidebar-primary: oklch(0.5782 0.2282 260.0251);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.3463 0.0054 236.6609);
+  --sidebar-accent-foreground: oklch(1.0000 0 0);
+  --sidebar-border: oklch(0.2739 0.0055 286.0326);
+  --sidebar-ring: oklch(0.5782 0.2282 260.0251);
+  --font-sans: inherit;
+  --font-serif: inherit;
+  --font-mono: inherit;
+  --radius: 0.6rem;
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.04);
+  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.06), 0px 1px 2px -1px hsl(0 0% 0% / 0.04);
+  --shadow-sm: 0px 2px 6px 0px hsl(0 0% 0% / 0.07), 0px 1px 2px -1px hsl(0 0% 0% / 0.05);
+  --shadow: 0px 4px 10px 0px hsl(0 0% 0% / 0.08), 0px 2px 4px -1px hsl(0 0% 0% / 0.06);
+  --shadow-md: 0px 6px 14px 0px hsl(0 0% 0% / 0.09), 0px 3px 6px -1px hsl(0 0% 0% / 0.07);
+  --shadow-lg: 0px 10px 24px 0px hsl(0 0% 0% / 0.10), 0px 4px 8px -2px hsl(0 0% 0% / 0.08);
+  --shadow-xl: 0px 16px 32px 0px hsl(0 0% 0% / 0.11), 0px 6px 12px -2px hsl(0 0% 0% / 0.08);
+  --shadow-2xl: 0px 24px 48px 0px hsl(0 0% 0% / 0.16);
+  --tracking-normal: 0rem;
+  --spacing: 0.25rem;
+  --navbar: oklch(1.0000 0 0);
+  --navbar-foreground: oklch(1.0000 0 0);
+  --navbar-primary: oklch(0.5782 0.2282 260.0251);
+  --navbar-primary-foreground: oklch(1.0000 0 0);
+  --navbar-accent: oklch(0.9417 0.0052 247.8790);
+  --navbar-accent-foreground: oklch(0.2621 0.0095 248.1897);
+  --navbar-border: oklch(0.9109 0.0070 247.9014);
+  --navbar-ring: oklch(0.5782 0.2282 260.0251);
+  --table-row-border: #dee2e6;
+
+  /* WhatsApp chat colors */
+  --wa-msg-incoming: #ffffff;
+  --wa-msg-outgoing: #dcf8c6;
+  --wa-msg-private: #F0E68C;
+  --wa-msg-quoted-incoming: #f0f0f0;
+  --wa-msg-quoted-outgoing: #cfe9ba;
+  --wa-msg-input-bg: #eeeeee;
+  --wa-msg-input-private-bg: #F0E68C;
+  --wa-msg-timestamp: #999999;
+  --wa-msg-ack-read: #53bdeb;
+  --wa-msg-ack-played: #22c55e;
+}
+
+.dark {
+  --background: oklch(0.1448 0 0);
+  --foreground: oklch(0.9816 0.0017 247.8390);
+  --card: oklch(0.2103 0.0059 285.8852);
+  --card-foreground: oklch(0.9816 0.0017 247.8390);
+  --popover: oklch(0.2103 0.0059 285.8852);
+  --popover-foreground: oklch(0.9816 0.0017 247.8390);
+  --primary: oklch(0.5782 0.2282 260.0251);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.5575 0.0165 244.8933);
+  --secondary-foreground: oklch(1.0000 0 0);
+  --muted: oklch(0.2621 0.0095 248.1897);
+  --muted-foreground: oklch(0.7692 0.0145 248.0166);
+  --accent: oklch(0.3463 0.0054 236.6609);
+  --accent-foreground: oklch(1.0000 0 0);
+  --destructive: oklch(0.5915 0.2020 21.2388);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.2739 0.0055 286.0326);
+  --input: oklch(0.2739 0.0055 286.0326);
+  --ring: oklch(0.5782 0.2282 260.0251);
+  --success: oklch(0.62 0.17 150);
+  --success-foreground: oklch(1.0000 0 0);
+  --warning: oklch(0.72 0.15 75);
+  --warning-foreground: oklch(0.15 0.05 75);
+  --chart-1: oklch(0.5782 0.2282 260.0251);
+  --chart-2: oklch(0.5575 0.0165 244.8933);
+  --chart-3: oklch(0.5520 0.1234 157.0121);
+  --chart-4: oklch(0.8442 0.1722 84.9338);
+  --chart-5: oklch(0.5915 0.2020 21.2388);
+  --sidebar: oklch(0.2103 0.0059 285.8852);
+  --sidebar-foreground: oklch(0.9816 0.0017 247.8390);
+  --sidebar-primary: oklch(0.5782 0.2282 260.0251);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.3463 0.0054 236.6609);
+  --sidebar-accent-foreground: oklch(1.0000 0 0);
+  --sidebar-border: oklch(0.2739 0.0055 286.0326);
+  --sidebar-ring: oklch(0.5782 0.2282 260.0251);
+  --font-sans: inherit;
+  --font-serif: inherit;
+  --font-mono: inherit;
+  --radius: 0.6rem;
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.10);
+  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.14), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-sm: 0px 2px 6px 0px hsl(0 0% 0% / 0.16), 0px 1px 2px -1px hsl(0 0% 0% / 0.12);
+  --shadow: 0px 4px 10px 0px hsl(0 0% 0% / 0.18), 0px 2px 4px -1px hsl(0 0% 0% / 0.14);
+  --shadow-md: 0px 6px 14px 0px hsl(0 0% 0% / 0.20), 0px 3px 6px -1px hsl(0 0% 0% / 0.16);
+  --shadow-lg: 0px 10px 24px 0px hsl(0 0% 0% / 0.22), 0px 4px 8px -2px hsl(0 0% 0% / 0.18);
+  --shadow-xl: 0px 16px 32px 0px hsl(0 0% 0% / 0.24), 0px 6px 12px -2px hsl(0 0% 0% / 0.18);
+  --shadow-2xl: 0px 24px 48px 0px hsl(0 0% 0% / 0.32);
+  --navbar: oklch(0.2103 0.0059 285.8852);
+  --navbar-foreground: oklch(0.9816 0.0017 247.8390);
+  --navbar-primary: oklch(0.5782 0.2282 260.0251);
+  --navbar-primary-foreground: oklch(1.0000 0 0);
+  --navbar-accent: oklch(0.3463 0.0054 236.6609);
+  --navbar-accent-foreground: oklch(1.0000 0 0);
+  --navbar-border: oklch(0.2739 0.0055 286.0326);
+  --navbar-ring: oklch(0.5782 0.2282 260.0251);
+  --table-row-border: oklch(0.2739 0.0055 286.0326);
+
+  /* WhatsApp chat colors (dark) */
+  --wa-msg-incoming: #202c33;
+  --wa-msg-outgoing: #005c4b;
+  --wa-msg-private: #3d3a1a;
+  --wa-msg-quoted-incoming: #1d282f;
+  --wa-msg-quoted-outgoing: #025144;
+  --wa-msg-input-bg: #202c33;
+  --wa-msg-input-private-bg: #3d3a1a;
+  --wa-msg-timestamp: #999999;
+  --wa-msg-ack-read: #53bdeb;
+  --wa-msg-ack-played: #22c55e;
+}
+
+/* Base mínima: fundo, texto e fonte do host. Sem reset (cada parceiro decide o seu). */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: var(--tracking-normal);
+}
+*,
+::after,
+::before {
+  border-color: var(--border);
+}

@@ -1,0 +1,13 @@
+{
+  "slug": "meuapp",
+  "tipo": "parceiro",
+  "nome": "Meu App",
+  "descricao": "Exemplo de app de parceiro em iframe",
+  "versao": "0.1.0",
+  "recurso": "apps_parceiros",
+  "versaoPlataforma": "^1.7.0",
+  "escopos": ["usuarios:ler"],
+  "acessos": { "modulo": "meuapp", "referencias": [] },
+  "web": { "modo": "iframe", "rotaBase": "/apps/meuapp" },
+  "menu": [{ "titulo": "Meu App", "rota": "inicio", "icone": "LayoutGrid" }]
+}

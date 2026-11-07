@@ -1,0 +1,69 @@
+# Publicação no npm com trusted publishing (OIDC) e provenance: nenhum token guardado no repositório.
+#
+# Fluxo: changesets entram com o código; para lançar, `npm run versionar` e commit na main. Este workflow
+# publica (changeset publish → npm publish com provenance) só as versões que ainda não estão no npm e
+# envia as tags. Com changeset pendente (versão ainda não aplicada), não publica nada.
+#
+# Só roda na main deste repositório e só depois que a variável de repositório NPM_PUBLICAR = "true" for
+# criada (quando os pacotes já existirem no npm com o trusted publisher configurado).
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    if: github.repository == 'diampi/botzetta-sdk-js' && github.ref == 'refs/heads/main' && vars.NPM_PUBLICAR == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # tags das versões publicadas
+      id-token: write # OIDC do trusted publishing e provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing exige npm >= 11.5.1 (o Node 22 traz o npm 10).
+      - run: npm install -g npm@11.21.2
+
+      - run: npm ci
+
+      - name: Verificar antes de publicar
+        env:
+          VERIFICAR_PADROES_INTERNOS: ${{ secrets.VERIFICAR_PADROES_INTERNOS }}
+        run: |
+          npm run build
+          npm run typecheck
+          npm run lint
+          npm test
+          npm run verificar:conteudo
+          npm run verificar:pacotes
+
+      - name: Changesets pendentes?
+        id: pendentes
+        run: |
+          if ls .changeset/*.md 2>/dev/null | grep -v '/README.md$' | grep -q .; then
+            echo "Há changesets não aplicados: rode 'npm run versionar' e faça commit na main para lançar."
+            echo "pendentes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pendentes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar (npm publish --provenance via changeset publish)
+        if: steps.pendentes.outputs.pendentes == 'false'
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        run: |
+          npx changeset publish
+          git push origin --tags

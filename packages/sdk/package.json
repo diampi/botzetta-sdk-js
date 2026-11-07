@@ -1,0 +1,105 @@
+{
+  "name": "@botzetta/sdk",
+  "version": "1.0.0",
+  "description": "SDK de backend (Node) para apps de parceiros do Botzetta: instalação OAuth, cliente da API, webhook assinado e validação do usuário do iframe",
+  "license": "MIT",
+  "author": "Diampi",
+  "homepage": "https://github.com/diampi/botzetta-sdk-js/tree/main/packages/sdk#readme",
+  "bugs": "https://github.com/diampi/botzetta-sdk-js/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diampi/botzetta-sdk-js.git",
+    "directory": "packages/sdk"
+  },
+  "keywords": [
+    "botzetta",
+    "sdk",
+    "oauth",
+    "webhook",
+    "jwks",
+    "parceiros"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "express": [
+        "./dist/express/index.d.ts"
+      ],
+      "catalogos": [
+        "./dist/catalogos.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./express": {
+      "import": {
+        "types": "./dist/express/index.d.ts",
+        "default": "./dist/express/index.js"
+      },
+      "require": {
+        "types": "./dist/express/index.d.cts",
+        "default": "./dist/express/index.cjs"
+      }
+    },
+    "./catalogos": {
+      "import": {
+        "types": "./dist/catalogos.d.ts",
+        "default": "./dist/catalogos.js"
+      },
+      "require": {
+        "types": "./dist/catalogos.d.cts",
+        "default": "./dist/catalogos.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "jose": "^6.2.12"
+  },
+  "peerDependencies": {
+    "express": "^5.1.0"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/supertest": "^6.0.3",
+    "express": "^5.2.1",
+    "supertest": "^7.1.4",
+    "tsup": "^8.5.1",
+    "vitest": "^3.2.7"
+  }
+}

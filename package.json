@@ -1,0 +1,35 @@
+{
+  "name": "botzetta-sdk-js",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SDK JavaScript/TypeScript para parceiros da Plataforma de Apps do Botzetta",
+  "license": "MIT",
+  "workspaces": [
+    "packages/sdk-frame",
+    "packages/sdk"
+  ],
+  "scripts": {
+    "build": "npm run build -ws --if-present",
+    "test": "node --test \"scripts/*.test.mjs\" && npm run test -ws --if-present",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck -ws --if-present",
+    "verificar:conteudo": "node scripts/verificar-conteudo.mjs",
+    "verificar:pacotes": "node scripts/verificar-pacotes.mjs",
+    "changeset": "changeset",
+    "versionar": "changeset version && npm install",
+    "verificar:exemplo": "node scripts/verificar-exemplo.mjs"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.39.0",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0"
+  }
+}

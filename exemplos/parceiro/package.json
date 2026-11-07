@@ -1,0 +1,29 @@
+{
+  "name": "exemplo-app-parceiro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "App de parceiro do Botzetta: tela em iframe (@botzetta/sdk-frame) + backend que valida o usuário, instala por OAuth e recebe webhooks (@botzetta/sdk)",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite build --watch & node --watch --env-file=.env server.ts",
+    "build": "vite build",
+    "start": "node --env-file=.env server.ts",
+    "typecheck": "tsc --noEmit",
+    "gerar-chave": "node gerar-chave.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@botzetta/sdk": "^1.0.0",
+    "@botzetta/sdk-frame": "^1.0.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.12"
+  }
+}

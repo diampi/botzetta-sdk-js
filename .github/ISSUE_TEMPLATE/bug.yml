@@ -1,0 +1,43 @@
+name: Bug no SDK
+description: Algo no SDK não funciona como a documentação diz
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Vulnerabilidade de segurança? Não abra issue: veja o SECURITY.md."
+  - type: dropdown
+    id: pacote
+    attributes:
+      label: Pacote
+      options:
+        - "@botzetta/sdk"
+        - "@botzetta/sdk-frame"
+    validations:
+      required: true
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do pacote
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: ambiente
+    attributes:
+      label: Ambiente
+      description: Versão do Node ou do navegador e sistema operacional
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Como reproduzir
+      description: Passos ou um trecho mínimo de código. Nunca cole tokens, chaves privadas ou dados de clientes.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que você esperava e o que aconteceu
+    validations:
+      required: true

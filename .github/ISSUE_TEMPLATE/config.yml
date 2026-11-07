@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Vulnerabilidade de segurança
+    url: https://github.com/diampi/botzetta-sdk-js/security/advisories/new
+    about: Relate em particular pelo GitHub, nunca em issue pública.

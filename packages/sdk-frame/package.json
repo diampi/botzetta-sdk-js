@@ -1,0 +1,49 @@
+{
+  "name": "@botzetta/sdk-frame",
+  "version": "1.0.0",
+  "description": "SDK da página de app de parceiro dentro do iframe do Botzetta: contexto do usuário, token e ações no host (postMessage frame/1)",
+  "license": "MIT",
+  "author": "Diampi",
+  "homepage": "https://github.com/diampi/botzetta-sdk-js/tree/main/packages/sdk-frame#readme",
+  "bugs": "https://github.com/diampi/botzetta-sdk-js/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diampi/botzetta-sdk-js.git",
+    "directory": "packages/sdk-frame"
+  },
+  "keywords": ["botzetta", "sdk", "iframe", "postmessage", "parceiros"],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tema.css": "./tema.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "tema.css"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "tsup": "^8.5.1",
+    "vitest": "^3.2.7"
+  }
+}

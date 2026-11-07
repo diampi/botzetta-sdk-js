@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes
+        run: npm test
+
+      - name: Checagem de conteúdo (arquivos versionados e dist)
+        run: npm run verificar:conteudo
+        env:
+          VERIFICAR_PADROES_INTERNOS: ${{ secrets.VERIFICAR_PADROES_INTERNOS }}
+
+      - name: Conteúdo dos pacotes (npm pack --dry-run)
+        run: npm run verificar:pacotes
+
+      - name: Exemplo de parceiro com os pacotes deste commit (npm pack)
+        run: npm run verificar:exemplo
