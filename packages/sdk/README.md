@@ -131,6 +131,14 @@ Exemplo completo (iframe + backend + instalação + webhook): [`exemplos/parceir
 
 `CATALOGO_ESCOPOS` (rótulo e risco de cada escopo), `CATALOGO_EVENTOS`, `PLATAFORMA_ISS` e `PREFIXO_API` também saem em `@botzetta/sdk/catalogos`, sem nenhuma dependência.
 
+## Origem do pacote
+
+Cada versão a partir da 1.0.1 é publicada pelo GitHub Actions deste repositório com [provenance](https://docs.npmjs.com/generating-provenance-statements): a página do pacote no npm mostra o commit e o workflow que a geraram. Para conferir as assinaturas no seu projeto:
+
+```bash
+npm audit signatures
+```
+
 ## Licença
 
 [MIT](LICENSE)

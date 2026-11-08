@@ -1,6 +1,6 @@
 {
   "name": "@botzetta/sdk-frame",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SDK da página de app de parceiro dentro do iframe do Botzetta: contexto do usuário, token e ações no host (postMessage frame/1)",
   "license": "MIT",
   "author": "Diampi",

@@ -4,8 +4,14 @@
 # publica (changeset publish → npm publish com provenance) só as versões que ainda não estão no npm e
 # envia as tags. Com changeset pendente (versão ainda não aplicada), não publica nada.
 #
-# Só roda na main deste repositório e só depois que a variável de repositório NPM_PUBLICAR = "true" for
-# criada (quando os pacotes já existirem no npm com o trusted publisher configurado).
+# Dois jobs:
+# - verificar: sem permissões e sem scripts de instalação; build, testes e checagens, e decide se há
+#   versão nova a publicar. O dist sai daqui como artefato.
+# - publicar: só roda quando há versão nova; usa o environment "npm" (revisor obrigatório, só a main),
+#   é o único com id-token e contents: write, não roda build nem scripts de instalação e publica o
+#   dist verificado. O trusted publisher no npm aceita só este arquivo (release.yml) e este environment.
+#
+# Desligado até a variável de repositório NPM_PUBLICAR = "true".
 name: Release
 
 on:
@@ -19,10 +25,73 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publicar:
+  verificar:
     if: github.repository == 'diampi/botzetta-sdk-js' && github.ref == 'refs/heads/main' && vars.NPM_PUBLICAR == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions: {}
+    outputs:
+      publicar: ${{ steps.versoes.outputs.publicar }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - run: npm ci --ignore-scripts
+
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+
+      - name: Checagem de conteúdo (arquivos versionados e dist)
+        env:
+          VERIFICAR_PADROES_INTERNOS: ${{ secrets.VERIFICAR_PADROES_INTERNOS }}
+        run: npm run verificar:conteudo
+
+      - name: Conteúdo dos pacotes (npm pack --dry-run)
+        run: npm run verificar:pacotes
+
+      - name: Há versão nova a publicar?
+        id: versoes
+        run: |
+          if ls .changeset/*.md 2>/dev/null | grep -v '/README.md$' | grep -q .; then
+            echo "Há changesets não aplicados: rode 'npm run versionar' e faça commit na main para lançar."
+            echo "publicar=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          publicar=false
+          for ws in $(node -p "require('./package.json').workspaces.join(' ')"); do
+            nome=$(node -p "require('./$ws/package.json').name")
+            versao=$(node -p "require('./$ws/package.json').version")
+            if npm view "$nome@$versao" version --registry https://registry.npmjs.org/ 2>/dev/null | grep -qx "$versao"; then
+              echo "$nome@$versao já está no npm."
+            else
+              echo "$nome@$versao será publicado."
+              publicar=true
+            fi
+          done
+          echo "publicar=$publicar" >> "$GITHUB_OUTPUT"
+
+      - name: Guardar o dist verificado
+        if: steps.versoes.outputs.publicar == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: packages/*/dist
+          if-no-files-found: error
+          retention-days: 1
+
+  publicar:
+    needs: verificar
+    if: needs.verificar.outputs.publicar == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm
     permissions:
       contents: write # tags das versões publicadas
       id-token: write # OIDC do trusted publishing e provenance
@@ -35,35 +104,22 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       # Trusted publishing exige npm >= 11.5.1 (o Node 22 traz o npm 10).
-      - run: npm install -g npm@11.21.2
+      - run: npm install -g --ignore-scripts npm@11.21.2
 
-      - run: npm ci
+      # Só o @changesets/cli é usado aqui; nada é compilado neste job.
+      - run: npm ci --ignore-scripts
 
-      - name: Verificar antes de publicar
-        env:
-          VERIFICAR_PADROES_INTERNOS: ${{ secrets.VERIFICAR_PADROES_INTERNOS }}
-        run: |
-          npm run build
-          npm run typecheck
-          npm run lint
-          npm test
-          npm run verificar:conteudo
-          npm run verificar:pacotes
-
-      - name: Changesets pendentes?
-        id: pendentes
-        run: |
-          if ls .changeset/*.md 2>/dev/null | grep -v '/README.md$' | grep -q .; then
-            echo "Há changesets não aplicados: rode 'npm run versionar' e faça commit na main para lançar."
-            echo "pendentes=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "pendentes=false" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Dist verificado no job anterior
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: packages
 
       - name: Publicar (npm publish --provenance via changeset publish)
-        if: steps.pendentes.outputs.pendentes == 'false'
         env:
           NPM_CONFIG_PROVENANCE: "true"
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           npx changeset publish
           git push origin --tags

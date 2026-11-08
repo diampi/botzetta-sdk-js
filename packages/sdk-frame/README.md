@@ -63,6 +63,14 @@ Erros chegam como `ErroFrame`, com `codigo` (`ERR_FRAME_TIMEOUT`, `ERR_FRAME_PAR
 
 `@botzetta/sdk-frame/tema.css` define as variáveis de cor do Botzetta (`--background`, `--primary`, `--border`…) para o tema claro (`:root`) e o escuro (`.dark`). O SDK põe e tira a classe `dark` no `<html>` conforme o tema do host. Com Tailwind v4, mapeie as variáveis num bloco `@theme inline` (ex.: `--color-primary: var(--primary)`).
 
+## Origem do pacote
+
+Cada versão a partir da 1.0.1 é publicada pelo GitHub Actions deste repositório com [provenance](https://docs.npmjs.com/generating-provenance-statements): a página do pacote no npm mostra o commit e o workflow que a geraram. Para conferir as assinaturas no seu projeto:
+
+```bash
+npm audit signatures
+```
+
 ## Licença
 
 [MIT](LICENSE) © Diampi

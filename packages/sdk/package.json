@@ -1,6 +1,6 @@
 {
   "name": "@botzetta/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SDK de backend (Node) para apps de parceiros do Botzetta: instalação OAuth, cliente da API, webhook assinado e validação do usuário do iframe",
   "license": "MIT",
   "author": "Diampi",
