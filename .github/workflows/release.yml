@@ -84,7 +84,8 @@ jobs:
           name: dist
           path: packages/*/dist
           if-no-files-found: error
-          retention-days: 1
+          # Tem que durar até a aprovação do environment npm (o job publicar falha se o artefato expirar).
+          retention-days: 7
 
   publicar:
     needs: verificar
